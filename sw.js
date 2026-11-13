@@ -1,7 +1,7 @@
 ﻿// Cache-first con cache en ejecucion. El index.html registra y precarga los assets del dispositivo
 // (movil o escritorio); aqui se cachea ademas todo lo que se pida del mismo origen.
 // Para publicar una version nueva, cambia VERSION (y la misma cadena en index.html).
-const VERSION = 'coprusa-v2';
+const VERSION = 'coprusa-v3';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 
 self.addEventListener('install', e => {

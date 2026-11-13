@@ -109196,6 +109196,9 @@ void main(){
         drawQuadWithShader(device,output,displayShader);
     }};
     camera.camera.postEffects.addEffect(displayEffect);
+    // The viewer resizes the canvas itself, so the post-effect queue never hears about it and keeps the old
+    // aspect ratio / offscreen target after a rotation or window resize. Tell it, before each frame renders.
+    {let lw=0,lh=0;app.on('framerender',()=>{const c=app.graphicsDevice.canvas;if(c.width!==lw||c.height!==lh){lw=c.width;lh=c.height;app.graphicsDevice.fire('resizecanvas',lw,lh);}});}
     const chunks=ShaderChunks.get(app.graphicsDevice,'glsl');
     const projection=chunks.get('cubeMapProjectPS');
     const originalCenter='vec3 envBoxPos = (envBoxMin + envBoxMax) * 0.5;';
@@ -109705,7 +109708,7 @@ export { createViewer };
   (function walk(o){if(typeof o==="string"){if(o.indexOf("assets/")===0)urls.push(o);}else if(o&&typeof o==="object"){if(o.d&&o.m&&typeof o.d==="string"){walk(o[k]);}else for(var x in o)walk(o[x]);}})(spec);
   addEventListener("load",function(){
     navigator.serviceWorker.register("sw.js").then(function(){return navigator.serviceWorker.ready;}).then(function(){
-      return caches.open("coprusa-v2").then(function(c){return Promise.all(urls.map(function(u){return c.match(u).then(function(h){return h||c.add(u);});}));});
+      return caches.open("coprusa-v3").then(function(c){return Promise.all(urls.map(function(u){return c.match(u).then(function(h){return h||c.add(u);});}));});
     }).catch(function(){});
   });
 })();
